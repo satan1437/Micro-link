@@ -1,0 +1,21 @@
+[tool.black]
+line-length = 88
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+strict_equality = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+exclude = [
+    "tests/*",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "tests.*"
+]
+ignore_errors = true

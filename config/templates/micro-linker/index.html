@@ -1,0 +1,28 @@
+{% extends 'micro-linker/base.html' %}
+
+{% block title %}сокращение ссылок{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <div class="page ">
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" action="{% url 'home' %}" class="input-group mb-3">
+                {% csrf_token %}
+                {{ form.url }}
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="submit">Сократить</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="page-text shadow-for-block">
+            <div class="p-2 bg-primary text-white">Для доступа к сервису вам нужно пройти регистрацию или войти
+                в свой аккаунт.
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

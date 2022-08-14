@@ -1,0 +1,24 @@
+{% extends 'micro-linker/base.html' %}
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Оригинальная ссылка</th>
+            <th scope="col">Сокращённая ссылка</th>
+            <th scope="col">Переходов</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in page_obj %}
+            <tr>
+                <td>{{ item.url }}</td>
+                <td><a href="{{ item.shorted_url }}" class="underline">{{ item.shorted_url }}</a></td>
+                <td>{{ item.redirection }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if page_obj.has_other_pages %}
+        {% include 'micro-linker/inc/_paginator.html' %}
+    {% endif %}
+{% endblock %}
