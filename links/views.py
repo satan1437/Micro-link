@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
+from links.services.link_manager import create_short_url, link_handler, get_all_user_links
 from .forms import LinkForm, UserRegisterForm, UserLoginForm
-from .services import create_short_url, link_handler, create_new_user, login_handler, get_user_all_links
+from .services.user_authorization import create_new_user, login_handler
 
 
 def index(request):
@@ -19,7 +20,7 @@ def index(request):
 
 
 def link_redirect(request, hash_):
-	return link_handler(hash_=hash_)
+	return link_handler(hash_=hash_, request=request)
 
 
 def user_registration(request):
@@ -51,7 +52,7 @@ def user_logout(request):
 
 @login_required
 def user_links(request):
-	links = get_user_all_links(request=request)
+	links = get_all_user_links(request=request)
 	paginator = Paginator(links, 19)
 	page_number = request.GET.get('page', 1)
 	page_obj = paginator.get_page(page_number)

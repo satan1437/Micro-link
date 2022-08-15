@@ -11,7 +11,7 @@
         <tbody>
         {% for item in page_obj %}
             <tr>
-                <td>{{ item.url }}</td>
+                <td>{{ item.url|truncatechars:50 }}</td>
                 <td><a href="{{ item.shorted_url }}" class="underline">{{ item.shorted_url }}</a></td>
                 <td>{{ item.redirection }}</td>
             </tr>
