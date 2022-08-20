@@ -9,11 +9,11 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in page_obj %}
+        {% for link in links %}
             <tr>
-                <td>{{ item.url|truncatechars:50 }}</td>
-                <td><a href="{{ item.shorted_url }}" class="underline">{{ item.shorted_url }}</a></td>
-                <td>{{ item.redirection }}</td>
+                <td>{{ link.url|truncatechars:50 }}</td>
+                <td><a href="{{ link.shorted_url }}" class="underline">{{ link.shorted_url }}</a></td>
+                <td>{{ link.redirection }}</td>
             </tr>
         {% endfor %}
         </tbody>
