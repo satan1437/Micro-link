@@ -1,59 +1,29 @@
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, RedirectView, FormView
 
 from links.services.link_manager import create_short_url, link_handler, get_all_user_links
-from .forms import LinkForm, UserRegisterForm, UserLoginForm
-from .services.user_authorization import create_new_user, login_handler
+from .forms import LinkForm
 
 
-def index(request):
-	if request.method == 'POST':
-		form = LinkForm(request.POST)
-		if form.is_valid():
-			return create_short_url(form=form, request=request)
-	else:
-		form = LinkForm()
-	return render(request, 'micro-linker/index.html', {'form': form})
+class HomeView(FormView):
+	form_class = LinkForm
+	template_name = 'micro-linker/index.html'
+	success_url = '/'
+
+	def form_valid(self, form):
+		return create_short_url(self.request, form)
 
 
-def link_redirect(request, hash_):
-	return link_handler(hash_=hash_, request=request)
+class LinkRedirectView(RedirectView):
+	def get_redirect_url(self, *args, **kwargs):
+		return link_handler(self.request, kwargs['hash_'])
 
 
-def user_registration(request):
-	if request.method == 'POST':
-		form = UserRegisterForm(request.POST)
-		if form.is_valid():
-			return create_new_user(form=form, request=request)
-	else:
-		form = UserRegisterForm()
-	return render(request, 'micro-linker/register.html', {'form': form})
+class UserLinksView(LoginRequiredMixin, ListView):
+	login_url = '/users/login/'
+	paginate_by = 19
+	template_name = 'micro-linker/links.html'
+	context_object_name = 'links'
 
-
-def user_login(request):
-	if request.method == 'POST':
-		form = UserLoginForm(data=request.POST)
-		if form.is_valid():
-			return login_handler(form=form, request=request)
-		else:
-			messages.error(request, 'Ошибка входа!')
-	else:
-		form = UserLoginForm()
-	return render(request, 'micro-linker/login.html', {'form': form})
-
-
-def user_logout(request):
-	logout(request)
-	return redirect('login')
-
-
-@login_required
-def user_links(request):
-	links = get_all_user_links(request=request)
-	paginator = Paginator(links, 19)
-	page_number = request.GET.get('page', 1)
-	page_obj = paginator.get_page(page_number)
-	return render(request, 'micro-linker/links.html', {'page_obj': page_obj})
+	def get_queryset(self):
+		return get_all_user_links(self.request)

@@ -1,16 +1,17 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.handlers.wsgi import WSGIRequest
 from django.db import DatabaseError
 from django.db.models.query import QuerySet
 from django.forms import Form
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from links.models import Link
 
 
-def create_short_url(form: Form, request: WSGIRequest) -> redirect:
+def create_short_url(request: WSGIRequest, form: Form) -> redirect:
 	"""Writes URL to database"""
 	try:
 		form_url = form.cleaned_data.get('url')
@@ -24,21 +25,18 @@ def create_short_url(form: Form, request: WSGIRequest) -> redirect:
 		return redirect('home')
 
 
-def link_handler(hash_: str, request: WSGIRequest) -> redirect:
+def link_handler(request: WSGIRequest, hash_: str) -> redirect:
 	"""Checks for a link"""
-	link = None
 	try:
 		link = Link.objects.get(url_hash=hash_)
 		link.redirection += 1
 		link.save()
+		return link.url
 	except ObjectDoesNotExist:
 		messages.error(request, 'Запрашиваемой короткой ссылки не найдено!')
-	finally:
-		if link:
-			return redirect(link.url)
-		return redirect('home')
+		return reverse('home')
 
 
 def get_all_user_links(request: WSGIRequest) -> QuerySet:
 	"""Returns all user links"""
-	return User.objects.get(username=request.user).all_links.all()
+	return get_user_model().objects.get(pk=request.user.pk).all_links.all()
