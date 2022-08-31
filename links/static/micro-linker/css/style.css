@@ -13,14 +13,9 @@ body {
 }
 
 .my-form {
-    width: 40%;
+    width: 30%;
     margin: 15px auto 0 auto;
 }
-
-.my-form button {
-    margin-bottom: 8px;
-}
-
 
 .page > form {
     display: flex;
@@ -76,4 +71,55 @@ body {
         right: auto;
         width: 100%;
     }
+}
+
+.profile {
+    width: 50%;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    margin: 50px auto auto;
+}
+
+.profile div {
+    width: 50%;
+    color: white;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.settings {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail {
+    margin-top: 20px;
+}
+
+.info img {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.profile-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-form div {
+    width: 100%;
+}
+
+.profile-form label {
+    color: black;
 }

@@ -6,6 +6,7 @@ from .forms import LinkForm
 
 
 class HomeView(FormView):
+	"""Homepage"""
 	form_class = LinkForm
 	template_name = 'micro-linker/index.html'
 	success_url = '/'
@@ -15,11 +16,14 @@ class HomeView(FormView):
 
 
 class LinkRedirectView(RedirectView):
+	"""Redirection system"""
+
 	def get_redirect_url(self, *args, **kwargs):
 		return link_handler(self.request, kwargs['hash_'])
 
 
 class UserLinksView(LoginRequiredMixin, ListView):
+	"""User link directory"""
 	login_url = '/users/login/'
 	paginate_by = 19
 	template_name = 'micro-linker/links.html'

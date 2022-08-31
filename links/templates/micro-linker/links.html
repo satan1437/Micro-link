@@ -1,23 +1,31 @@
 {% extends 'micro-linker/base.html' %}
 {% block content %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Оригинальная ссылка</th>
-            <th scope="col">Сокращённая ссылка</th>
-            <th scope="col">Переходов</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for link in links %}
+    {% if links %}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ link.url|truncatechars:50 }}</td>
-                <td><a href="{{ link.shorted_url }}" class="underline">{{ link.shorted_url }}</a></td>
-                <td>{{ link.redirection }}</td>
+                <th scope="col">Оригинальная ссылка</th>
+                <th scope="col">Сокращённая ссылка</th>
+                <th scope="col">Переходов</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for link in links %}
+                <tr>
+                    <td>{{ link.url|truncatechars:50 }}</td>
+                    <td><a href="{{ link.shorted_url }}" class="underline">{{ link.shorted_url }}</a></td>
+                    <td>{{ link.redirection }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="page-text shadow-for-block">
+            <div class="p-2 bg-info text-dark">
+                Вы ещё не создали ни одной короткой ссылки.
+            </div>
+        </div>
+    {% endif %}
     {% if page_obj.has_other_pages %}
         {% include 'micro-linker/inc/_paginator.html' %}
     {% endif %}

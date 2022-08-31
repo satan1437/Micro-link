@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.handlers.wsgi import WSGIRequest
 from django.db import DatabaseError
@@ -9,6 +8,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from links.models import Link
+from users.models import CustomUser
 
 
 def create_short_url(request: WSGIRequest, form: Form) -> redirect:
@@ -39,4 +39,4 @@ def link_handler(request: WSGIRequest, hash_: str) -> redirect:
 
 def get_all_user_links(request: WSGIRequest) -> QuerySet:
 	"""Returns all user links"""
-	return get_user_model().objects.get(pk=request.user.pk).all_links.all()
+	return CustomUser.objects.get(pk=request.user.pk).all_links.all()
