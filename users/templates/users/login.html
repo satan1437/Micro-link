@@ -1,7 +1,5 @@
 {% extends 'micro-linker/base.html' %}
-
 {% block title %}Вход{% endblock %}
-
 {% block content %}
     <div class="my-form shadow-for-block">
         <div class="form-control">
@@ -10,6 +8,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-success">Войти</button>
+                <a class="btn btn-danger" href="{% url 'restore' %}">Восстановить пароль</a>
             </form>
         </div>
     </div>

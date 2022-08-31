@@ -1,0 +1,18 @@
+{% extends 'micro-linker/base.html' %}
+{% block title %}Восстановление пароля{% endblock %}
+{% block content %}
+    <div class="my-form shadow-for-block">
+        <div class="form-control">
+            <h1>Восстановление пароля:</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.email.errors }}
+                <p class="form-floating mb-2">
+                    {{ form.email }}
+                    <label>Email</label>
+                </p>
+                <button type="submit" class="form-control btn btn-success">Отправить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

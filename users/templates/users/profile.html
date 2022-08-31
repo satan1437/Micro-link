@@ -1,0 +1,36 @@
+{% extends 'micro-linker/base.html' %}
+{% load static %}
+{% block title %}Профиль{% endblock title %}
+{% block content %}
+    <div class="profile shadow">
+        <div class="info">
+            <img src="{% static 'micro-linker/img/ava.png' %}" alt="user">
+            <p>{{ user.email }}</p>
+            <p>Дата регистрации: {{ user.date_joined }}</p>
+            <p>Всего переходов: {{ all_redirects.redirection__sum }}</p>
+            <p>Всего ссылок: {{ all_links }}</p>
+        </div>
+        <div class="settings">
+            <form method="post" class="profile-form">
+                {% csrf_token %}
+                {{ form.non_field.errors }}
+                {{ form.old_password.errors }}
+                <p class="form-floating mb-2">
+                    {{ form.old_password }}
+                    <label>Старый пароль</label>
+                </p>
+                {{ form.new_password1.errors }}
+                <p class="form-floating mb-2">
+                    {{ form.new_password1 }}
+                    <label>Новый пароль</label>
+                </p>
+                {{ form.new_password2.errors }}
+                <p class="form-floating mb-2">
+                    {{ form.new_password2 }}
+                    <label>Повтор пароля</label>
+                </p>
+                <button type="submit" class="btn btn-warning">Изменить</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
